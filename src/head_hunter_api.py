@@ -1,6 +1,5 @@
 from src.parser import Parser
 import requests
-from pprint import pprint
 
 
 class HeadHunterAPI(Parser):
@@ -17,14 +16,8 @@ class HeadHunterAPI(Parser):
     def load_vacancies(self, keyword: str):
         """Метод для загрузки списка вакансий с API HeadHunter"""
         self.params['text'] = keyword
-        while self.params.get('page') != 1:  # 20!
+        while self.params.get('page') != 20:
             response = requests.get(self.url, headers=self.headers, params=self.params)
             vacancies = response.json()['items']
             self.vacancies.extend(vacancies)
             self.params['page'] += 1
-
-
-if __name__ == '__main__':
-    hh = HeadHunterAPI('vacancies')
-    hh.load_vacancies('python')
-    pprint(hh.vacancies)
