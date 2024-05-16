@@ -21,6 +21,7 @@ def user_interaction():
     ranged_vacancies = utils.get_vacancies_by_salary(filtered_vacancies, salary_from)
     sorted_vacancies = utils.sort_vacancies(ranged_vacancies)
     top_vacancies = utils.get_top_vacancies(sorted_vacancies, top_n)
+    json_saver.add_vacancies(top_vacancies)
     utils.print_vacancies(top_vacancies)
 
 
