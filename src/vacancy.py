@@ -1,5 +1,5 @@
 from typing import Self
-from src.currencyconverterapi import CurrencyConverterERAPI
+from src.currency_converter_erapi import CurrencyConverterERAPI
 from src.head_hunter_api import HeadHunterAPI
 
 
@@ -50,13 +50,13 @@ class Vacancy:
 
     def __str__(self):
         """Возвращает строковое представление о вакансии"""
-        return (f'id вакансии: {self.name}\n'
+        return (f'id вакансии: {self.id}\n'
                 f'Название вакансии: {self.name}\n'
                 f'Регион: {self.area}\n'
                 f'Ссылка на вакансию: {self.url}\n'
                 f'Зарплата: {self.__salary}\n'
                 f'Работодатель: {self.employer}\n'
-                f'Требования {self.requirement}\n'
+                f'Требования: {self.requirement}\n'
                 f'Обязанности: {self.responsibility}\n'
                 f'Опыт работы: {self.experience}\n'
                 f'Занятость: {self.employment}\n'
@@ -64,13 +64,13 @@ class Vacancy:
 
     def __repr__(self):
         """Возвращает строковое представление о вакансии"""
-        return (f'id вакансии: {self.name}\n'
+        return (f'id вакансии: {self.id}\n'
                 f'Название вакансии: {self.name}\n'
                 f'Регион: {self.area}\n'
                 f'Ссылка на вакансию: {self.url}\n'
                 f'Зарплата: {self.__salary}\n'
                 f'Работодатель: {self.employer}\n'
-                f'Требования {self.requirement}\n'
+                f'Требования: {self.requirement}\n'
                 f'Обязанности: {self.responsibility}\n'
                 f'Опыт работы: {self.experience}\n'
                 f'Занятость: {self.employment}\n'
