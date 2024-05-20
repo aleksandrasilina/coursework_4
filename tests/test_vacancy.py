@@ -120,13 +120,13 @@ def test_vacancy_getter_salary(vacancy_2):
 
 
 def test_vacancy_setter_salary(vacancy_2):
-    """Тестирует геттер для зарплаты"""
+    """Тестирует сеттер для зарплаты"""
     vacancy_2.salary = 20000
     assert vacancy_2.salary == 20000
 
 
 def test_vacancy_setter_salary_error(vacancy_2):
-    """Тестирует геттер для зарплаты с ошибкой"""
+    """Тестирует сеттер для зарплаты с ошибкой"""
     with pytest.raises(ValueError):
         vacancy_2.salary = -20000
 
