@@ -1,4 +1,5 @@
 import pytest
+import os.path
 
 from src.currency_converter_erapi import CurrencyConverterERAPI
 from src.head_hunter_api import HeadHunterAPI
@@ -216,7 +217,12 @@ def cc_api():
 
 @pytest.fixture
 def json_saver():
+    if os.path.exists(f'C:/Users/Александра/PycharmProjects/coursework_4/data/test_vacancies.json'):
+        os.remove('C:/Users/Александра/PycharmProjects/coursework_4/data/test_vacancies.json')
     return JSONSaver(HeadHunterAPI('test_vacancies'))
+    # with open(f'C:/Users/Александра/PycharmProjects/coursework_4/data/test_vacancies.json', 'w'):
+    #     pass
+
 
 
 @pytest.fixture
