@@ -7,8 +7,8 @@ from src.vacancy import Vacancy
 def user_interaction():
     search_query = input("Введите поисковый запрос для поиска вакансий: ")
     keywords = input("Введите ключевые слова для фильтрации вакансий через пробел: ").split()
-    top_n = int(input("Введите количество вакансий для вывода в топ N: "))
-    salary_from = int(input("Введите желаемую зарплату: "))
+    top_n = input("Введите количество вакансий для вывода в топ N: ")
+    salary_from = input("Введите желаемую зарплату: ")
     file_worker = input("Введите название файла для сохранения информации о вакансиях: ")
 
     head_hunter_api = HeadHunterAPI(file_worker)
@@ -21,7 +21,6 @@ def user_interaction():
     ranged_vacancies = utils.get_vacancies_by_salary(filtered_vacancies, salary_from)
     sorted_vacancies = utils.sort_vacancies(ranged_vacancies)
     top_vacancies = utils.get_top_vacancies(sorted_vacancies, top_n)
-    json_saver.add_vacancies(top_vacancies)
     utils.print_vacancies(top_vacancies)
 
 
