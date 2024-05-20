@@ -99,12 +99,12 @@ class Vacancy:
 
     @property
     def salary(self):
-        """Геттер для вакансии"""
+        """Геттер для зарплаты"""
         return self.__salary
 
     @salary.setter
     def salary(self, salary):
-        """Сеттер для вакансии"""
+        """Сеттер для зарплаты"""
         if salary < 0:
             raise ValueError("Зарплата не может быть отрицательной")
         self.__salary = salary
