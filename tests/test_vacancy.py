@@ -1,5 +1,6 @@
 import pytest
 
+from src.currency_converter_erapi import CurrencyConverterERAPI
 from src.vacancy import Vacancy
 
 
@@ -150,16 +151,20 @@ def test_vacancy_get_salary_without_tax_gross_false(vacancy_3):
     assert vacancy_3.get_salary_without_tax() == 180000
 
 
-def test_vacancy_convert_to_rubles_byr(vacancy_4):
-    """Тестирует метод для конвертации зарплаты из белорусских рублей в рубли"""
-    assert vacancy_4.convert_to_rubles() == 32357
-
-
 def test_vacancy_convert_to_rubles_rur(vacancy_3):
     """Тестирует метод для конвертации зарплаты из рублей в рубли"""
     assert vacancy_3.convert_to_rubles() == 180000
 
 
-def test_vacancy_convert_to_rubles_usd(vacancy_5):
+def test_vacancy_convert_to_rubles_usd(requests_mock, vacancy_5):
     """Тестирует метод для конвертации зарплаты из долларов в рубли"""
-    assert vacancy_5.convert_to_rubles() == 90880
+    data = {'rates': {'RUB': 90.89}, 'result': 'success'}
+    requests_mock.register_uri('GET', f'https://open.er-api.com/v6/latest/USD', json=data)
+    assert vacancy_5.convert_to_rubles() == 90890
+
+
+def test_vacancy_convert_to_rubles_byr(requests_mock, vacancy_4):
+    """Тестирует метод для конвертации зарплаты из белорусских рублей в рубли"""
+    data = {'rates': {'RUB': 27.87}, 'result': 'success'}
+    requests_mock.register_uri('GET', f'https://open.er-api.com/v6/latest/BYN', json=data)
+    assert vacancy_4.convert_to_rubles() == 32023  # с пересчетом на зарплату без учета НДФЛ
