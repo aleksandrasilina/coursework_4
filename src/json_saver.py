@@ -15,10 +15,17 @@ class JSONSaver(VacancySaver):
 
     def add_vacancies(self, vacancies: list[Vacancy]):
         """Метод для сохранения списка экземпляров вакансий в файл"""
-        with open(os.path.join('C:/Users/Александра/PycharmProjects/coursework_4/data', self.file_name), 'w',
-                  encoding='utf-8') as file:
-            vacancies_list = [vac.__dict__() for vac in vacancies]
-            json.dump(vacancies_list, file, ensure_ascii=False, indent=4)
+        vacancies_list = [vac.__dict__() for vac in vacancies]
+        if not os.path.exists(f"../data/{self.file_name}"):
+            with open(os.path.join('C:/Users/Александра/PycharmProjects/coursework_4/data', self.file_name), 'w',
+                      encoding='utf-8') as file:
+                json.dump(vacancies_list, file, ensure_ascii=False, indent=4)
+        else:
+            vacancies_data = self.get_vacancies()
+            vacancies_data.extend(vacancies_list)
+            with open(os.path.join('C:/Users/Александра/PycharmProjects/coursework_4/data', self.file_name), 'w',
+                      encoding='utf-8') as file:
+                json.dump(vacancies_data, file, ensure_ascii=False, indent=4)
 
     def get_vacancies(self) -> list[dict]:
         """Возвращает содержимое файла"""
