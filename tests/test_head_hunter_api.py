@@ -16,7 +16,7 @@ def test_head_hunter_api_load_vacancies(hh_api):
     assert len(hh_api.vacancies) > 0
 
 
-# def test_head_hunter_api_load_vacancies_response(hh_api):
-#     """Тестирует метод для загрузки списка вакансий с API HeadHunter"""
-#     hh_api.load_vacancies("пекарь")
-#     assert requests.get(hh_api.url, headers=hh_api.headers, params=hh_api.params) == '<Response [200]>'
+def test_head_hunter_api_file_worker_setter(hh_api):
+    """Тестирует сеттер для зарплаты"""
+    hh_api.file_worker = "vacancies"
+    assert hh_api.file_worker == "vacancies"
