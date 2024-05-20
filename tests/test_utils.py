@@ -1,10 +1,25 @@
+import pytest
+
 from src import utils
 
 
 def test_utils_get_vacancies_by_salary(vacancy_1, vacancy_2, vacancy_3):
     """Тестирует метод для фильтрации списка вакансий по зарплате"""
     vacancies_list = [vacancy_1, vacancy_2, vacancy_3]
-    assert utils.get_vacancies_by_salary(vacancies_list, 20000) == [vacancy_2, vacancy_3]
+    assert utils.get_vacancies_by_salary(vacancies_list, '20000') == [vacancy_2, vacancy_3]
+
+
+def test_utils_get_vacancies_by_salary_without_salary_value(vacancy_1, vacancy_2, vacancy_3):
+    """Тестирует метод для фильтрации списка вакансий по зарплате"""
+    vacancies_list = [vacancy_1, vacancy_2, vacancy_3]
+    assert utils.get_vacancies_by_salary(vacancies_list) == vacancies_list
+
+
+def test_utils_get_vacancies_by_salary_error(vacancy_1, vacancy_2, vacancy_3):
+    """Тестирует метод для фильтрации списка вакансий по зарплате"""
+    vacancies_list = [vacancy_1, vacancy_2, vacancy_3]
+    with pytest.raises(ValueError):
+        utils.get_vacancies_by_salary(vacancies_list, 'сто тысяч')
 
 
 def test_utils_sort_vacancies(vacancy_1, vacancy_2, vacancy_3):
@@ -16,7 +31,20 @@ def test_utils_sort_vacancies(vacancy_1, vacancy_2, vacancy_3):
 def test_utils_get_top_vacancies(vacancy_1, vacancy_2, vacancy_3):
     """Тестирует метод для получения топа n вакансий"""
     vacancies_list = [vacancy_3, vacancy_2, vacancy_1]
-    assert utils.get_top_vacancies(vacancies_list, 2) == [vacancy_3, vacancy_2]
+    assert utils.get_top_vacancies(vacancies_list, '2') == [vacancy_3, vacancy_2]
+
+
+def test_utils_get_top_vacancies_without_top_value(vacancy_1, vacancy_2, vacancy_3):
+    """Тестирует метод для получения топа n вакансий"""
+    vacancies_list = [vacancy_3, vacancy_2, vacancy_1]
+    assert utils.get_top_vacancies(vacancies_list) == vacancies_list
+
+
+def test_utils_get_top_vacancies_error(vacancy_1, vacancy_2, vacancy_3):
+    """Тестирует метод для получения топа n вакансий"""
+    vacancies_list = [vacancy_3, vacancy_2, vacancy_1]
+    with pytest.raises(ValueError):
+        utils.get_top_vacancies(vacancies_list, 'десять')
 
 
 def test_utils_print_vacancies(vacancy_1, vacancy_2, capsys):
