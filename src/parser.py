@@ -5,7 +5,7 @@ class Parser(ABC):
     """Абстрактный класс для работы с API сервиса с вакансиями"""
 
     def __init__(self, file_worker: str):
-        self.file_worker = file_worker
+        self._file_worker = file_worker
 
     @abstractmethod
     def load_vacancies(self, keyword: str):
