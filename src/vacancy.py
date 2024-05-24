@@ -28,25 +28,9 @@ class Vacancy:
         self.responsibility = responsibility
         self.experience = experience
         self.employment = employment
-        # зарплата является числом после выгрузки вакансий из файла
-        if not isinstance(salary, int):
-            # если зарплата не указана, то приравниваем ее к 0
-            if salary:
-                # за зарплату принимаем нижнюю границу диапазона
-                if salary.get("from"):
-                    self.__salary = salary.get("from")
-                    self.salary_currency = salary.get("currency")
-                    self.salary_gross = salary.get("gross")
-                    # если зарплата указана с учетом НДФЛ, то пересчитываем без учета налога как в большинстве вакансий
-                    self.__salary = self.get_salary_without_tax()
-                    # конвертируем зарплату в рубли если зарплата указана в другой валюте
-                    # self.__salary = self.convert_to_rubles()
-                else:
-                    self.__salary = 0
-            else:
-                self.__salary = 0
-        else:
-            self.__salary = salary
+        self.salary_gross = None
+        self.salary_currency = None
+        self.__salary = self.salary_valid(salary)
 
     def __str__(self):
         """Возвращает строковое представление о вакансии"""
@@ -69,6 +53,8 @@ class Vacancy:
                 f'Регион: {self.area}\n'
                 f'Ссылка на вакансию: {self.url}\n'
                 f'Зарплата: {self.__salary}\n'
+                f'Валюта: {self.salary_currency}\n'
+                f'С учетом НДФЛ: {self.salary_gross}\n'
                 f'Работодатель: {self.employer}\n'
                 f'Требования: {self.requirement}\n'
                 f'Обязанности: {self.responsibility}\n'
@@ -108,6 +94,26 @@ class Vacancy:
         if salary < 0:
             raise ValueError("Зарплата не может быть отрицательной")
         self.__salary = salary
+
+    def salary_valid(self, salary):
+        """Метод для валидации зарплаты"""
+        # если зарплата не указана, то приравниваем ее к 0
+        if salary:
+            # если зарплата является числом (после выгрузки вакансий из файла)
+            if not isinstance(salary, int):
+                # за зарплату принимаем нижнюю границу диапазона
+                if salary.get("from"):
+                    self.__salary = salary.get("from")
+                    self.salary_currency = salary.get("currency")
+                    self.salary_gross = salary.get("gross")
+                    # если зарплата указана с учетом НДФЛ, то пересчитываем без учета налога как в большинстве вакансий
+                    self.__salary = self.get_salary_without_tax()
+                    # если зарплата указана в другой валюте, то конвертируем зарплату в рубли
+                    self.__salary = self.convert_to_rubles()
+                    return self.__salary
+                return 0
+            return salary
+        return 0
 
     @classmethod
     def cast_to_object_list(cls, vacancies: list[dict]) -> list[Self]:

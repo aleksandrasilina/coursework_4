@@ -1,6 +1,5 @@
 import pytest
 
-from src.currency_converter_erapi import CurrencyConverterERAPI
 from src.vacancy import Vacancy
 
 
@@ -74,18 +73,21 @@ def test_vacancy_str(vacancy_1):
                               'Занятость: Test_1\n')
 
 
-def test_vacancy_repr(vacancy_2):
+def test_vacancy_repr(vacancy_3):
     """Тестирует метод __repr__ - строковое представление вакансии"""
-    assert repr(vacancy_2) == ('id вакансии: 2\n'
-                               'Название вакансии: Test_2\n'
-                               'Регион: Test_2\n'
-                               'Ссылка на вакансию: Test_2\n'
-                               'Зарплата: 50000\n'
-                               'Работодатель: Test_2\n'
-                               'Требования: Test_2\n'
-                               'Обязанности: Test_2\n'
-                               'Опыт работы: Test_2\n'
-                               'Занятость: Test_2\n')
+    assert repr(vacancy_3) == ('id вакансии: 3\n'
+                               'Название вакансии: Test_3\n'
+                               'Регион: Test_3\n'
+                               'Ссылка на вакансию: Test_3\n'
+                               'Зарплата: 180000\n'
+                               'Валюта: RUR\n'
+                               'С учетом НДФЛ: False\n'
+                               'Работодатель: Test_3\n'
+                               'Требования: Test_3\n'
+                               'Обязанности: Test_3\n'
+                               'Опыт работы: Test_3\n'
+                               'Занятость: Test_3\n'
+                               )
 
 
 def test_vacancy_dict(vacancy_2):
@@ -141,9 +143,11 @@ def test_vacancy_cast_to_object_list(hh_vacancy_1, hh_vacancy_2):
     assert Vacancy.cast_to_object_list(hh_vacancies)[1].salary == 0
 
 
-def test_vacancy_get_salary_without_tax_gross_true(vacancy_4):
+def test_vacancy_get_salary_without_tax_gross_true(requests_mock, vacancy_4):
     """Тестирует метод для пересчета зарплаты без учета НДФЛ, если зарплата указана с учетом налога"""
-    assert vacancy_4.get_salary_without_tax() == 1321
+    data = {'rates': {'RUB': 27.87}, 'result': 'success'}
+    requests_mock.register_uri('GET', 'https://open.er-api.com/v6/latest/BYN', json=data)
+    assert vacancy_4.convert_to_rubles() == 32023  # с пересчетом на зарплату без учета НДФЛ
 
 
 def test_vacancy_get_salary_without_tax_gross_false(vacancy_3):
@@ -159,7 +163,7 @@ def test_vacancy_convert_to_rubles_rur(vacancy_3):
 def test_vacancy_convert_to_rubles_usd(requests_mock, vacancy_5):
     """Тестирует метод для конвертации зарплаты из долларов в рубли"""
     data = {'rates': {'RUB': 90.89}, 'result': 'success'}
-    requests_mock.register_uri('GET', f'https://open.er-api.com/v6/latest/USD', json=data)
+    requests_mock.register_uri('GET', 'https://open.er-api.com/v6/latest/USD', json=data)
     assert vacancy_5.convert_to_rubles() == 90890
 
 
