@@ -12,25 +12,28 @@ class JSONSaver(VacancySaver):
     def __init__(self, hh_api: HeadHunterAPI):
         """Конструктор для сохранения вакансий в файл"""
         self.file_name = hh_api.file_worker + '.json'
+        self.__root_path = os.path.dirname(os.path.dirname(__file__))  # путь до корня проекта
+
+    @property
+    def root_path(self):
+        """Геттер для root_path"""
+        return self.__root_path
 
     def add_vacancies(self, vacancies: list[Vacancy]):
         """Метод для сохранения списка экземпляров вакансий в файл"""
         vacancies_list = [vac.__dict__() for vac in vacancies]
-        if not os.path.exists(f'C:/Users/Александра/PycharmProjects/coursework_4/data/{self.file_name}'):
-            with open(os.path.join('C:/Users/Александра/PycharmProjects/coursework_4/data', self.file_name), 'w',
-                      encoding='utf-8') as file:
+        if not os.path.exists(f'{self.__root_path}/data/{self.file_name}'):
+            with open(f'{self.__root_path}/data/{self.file_name}', 'w', encoding='utf-8') as file:
                 json.dump(vacancies_list, file, ensure_ascii=False, indent=4)
         else:
             vacancies_data = self.get_vacancies()
             vacancies_data.extend(vacancies_list)
-            with open(os.path.join('C:/Users/Александра/PycharmProjects/coursework_4/data', self.file_name), 'w',
-                      encoding='utf-8') as file:
+            with open(f'{self.__root_path}/data/{self.file_name}', 'w', encoding='utf-8') as file:
                 json.dump(vacancies_data, file, ensure_ascii=False, indent=4)
 
     def get_vacancies(self) -> list[dict]:
         """Возвращает содержимое файла"""
-        with open(os.path.join('C:/Users/Александра/PycharmProjects/coursework_4/data', self.file_name), 'r',
-                  encoding='utf-8') as file:
+        with open(f'{self.__root_path}/data/{self.file_name}', 'r', encoding='utf-8') as file:
             return json.load(file)
 
     def filter_vacancies(self, keywords: list[str]) -> list[Vacancy]:
@@ -51,7 +54,7 @@ class JSONSaver(VacancySaver):
         """Метод для добавления вакансии в файл"""
         vacancies_data = self.get_vacancies()
         vacancies_data.append(vacancy.__dict__())
-        with open(os.path.join('C:/Users/Александра/PycharmProjects/coursework_4/data', self.file_name), 'w',
+        with open(f'{self.__root_path}/data/{self.file_name}', 'w',
                   encoding='utf-8') as file:
             json.dump(vacancies_data, file, ensure_ascii=False, indent=4)
 
@@ -61,6 +64,6 @@ class JSONSaver(VacancySaver):
         for vac in vacancies_data:
             if vac['id'] == vacancy.id:
                 vacancies_data.remove(vac)
-        with open(os.path.join('C:/Users/Александра/PycharmProjects/coursework_4/data', self.file_name), 'w',
+        with open(f'{self.__root_path}/data/{self.file_name}', 'w',
                   encoding='utf-8') as file:
             json.dump(vacancies_data, file, ensure_ascii=False, indent=4)
