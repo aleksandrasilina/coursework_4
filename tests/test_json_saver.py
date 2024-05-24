@@ -11,7 +11,7 @@ def test_json_saver_add_vacancies_and_create_file(vacancy_1, vacancy_2, vacancy_
     """Тестирует метод для сохранения списка экземпляров вакансий в файл и создание файла"""
     vacancies_list = [vacancy_1, vacancy_2, vacancy_3]
     json_saver.add_vacancies(vacancies_list)
-    with open(os.path.join('C:/Users/Александра/PycharmProjects/coursework_4/data', json_saver.file_name), 'r',
+    with open(f'{json_saver.root_path}/data/{json_saver.file_name}', 'r',
               encoding='utf-8') as file:
         assert len(json.load(file)) == 3
 
@@ -22,9 +22,10 @@ def test_json_saver_add_vacancies(vacancy_1, vacancy_2, vacancy_3, vacancy_4, js
     vacancies_list_2 = [vacancy_3, vacancy_4]
     json_saver.add_vacancies(vacancies_list_1)
     json_saver.add_vacancies(vacancies_list_2)
-    with open(os.path.join('C:/Users/Александра/PycharmProjects/coursework_4/data', json_saver.file_name), 'r',
+    with open(f'{json_saver.root_path}/data/{json_saver.file_name}', 'r',
               encoding='utf-8') as file:
         assert len(json.load(file)) == 4
+
 
 
 def test_json_saver_get_vacancies(vacancy_1, vacancy_2, vacancy_3, json_saver):
