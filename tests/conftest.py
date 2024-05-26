@@ -217,8 +217,8 @@ def cc_api():
 
 @pytest.fixture
 def json_saver():
-    if os.path.exists(f'C:/Users/Александра/PycharmProjects/coursework_4/data/test_vacancies.json'):
-        os.remove('C:/Users/Александра/PycharmProjects/coursework_4/data/test_vacancies.json')
+    if os.path.exists(f'{os.path.dirname(os.path.dirname(__file__))}/data/test_vacancies.json'):
+        os.remove(f'{os.path.dirname(os.path.dirname(__file__))}/data/test_vacancies.json')
     return JSONSaver(HeadHunterAPI('test_vacancies'))
 
 
